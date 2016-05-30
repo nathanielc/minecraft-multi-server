@@ -1,0 +1,18 @@
+[Unit]
+Description=Minecraft Container %I
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+EnvironmentFile=-/etc/minecraft/%i
+ExecStartPre=/usr/bin/minecraftctl start %i
+ExecStart=/usr/bin/docker logs -f %i
+
+ExecStop=-/usr/bin/minecraftctl stop %i
+ExecStopPost=-/usr/bin/minecraftctl stop %i
+
+[Install]
+WantedBy=multi-user.target
+

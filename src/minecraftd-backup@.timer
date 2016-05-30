@@ -1,0 +1,11 @@
+[Unit]
+Description=Weekly backup of Minecraft server %i
+
+[Timer]
+OnCalendar=weekly
+Persistent=true
+
+
+[Install]
+WantedBy=multi-user.target
+
