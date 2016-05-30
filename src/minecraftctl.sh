@@ -51,6 +51,7 @@ running() {
 	return $?
 }
 
+# Check if anyone is online
 is_anyone_online() {
 	player_count=$(game_command list "players online:" | sed -r 's/.*([[:digit:]]+)\/[[:digit:]]+ players online:.*/\1/')
 	test $player_count -ne 0
@@ -78,7 +79,7 @@ start() {
 	 	$vol_mount \
 	 	-p $PORT:25565 \
 	 	-e "JVM_OPTS=-Xmx${MAXHEAP}M -Xms${MINHEAP}M" \
-	 	-e EULA=true \
+	 	-e "EULA=$EULA" \
 	 	-e "VERSION=$VERSION" \
 	 	-e "DIFFICULTY=$DIFFICULTY" \
 	 	-e "WHITELIST=$WHITELIST" \
@@ -214,7 +215,7 @@ restart)
 	start
 	;;
 backup)
-	backup	
+	backup
 	;;
 *)
 	usage
