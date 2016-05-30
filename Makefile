@@ -6,9 +6,9 @@ PREFIX ?= /
 install:
 	install -D -m0644 src/minecraftd@.service \
 		$(PREFIX)/usr/lib/systemd/system/minecraftd@.service
-	install -D -m0644 src/minecraft-backup@.service \
+	install -D -m0644 src/minecraftd-backup@.service \
 		$(PREFIX)/usr/lib/systemd/system/minecraftd-backup@.service
-	install -D -m0644 src/minecraft-backup@.timer \
+	install -D -m0644 src/minecraftd-backup@.timer \
 		$(PREFIX)/usr/lib/systemd/system/minecraftd-backup@.timer
 	install -D -m0755 src/minecraftctl.sh  $(PREFIX)/usr/bin/minecraftctl
 
