@@ -1,13 +1,13 @@
-# Minecraft Server
+# Minecraft Multi Server
 
-This project defines a template systemd service unit file for hosting several minecraft servers.
-Since once you have one you are going to want another ;)
+This project defines a template systemd service unit file for hosting several minecraft servers via docker.
+Since once you have one, you are going to want another ;)
 
 # Install
 
 This system runs the minecraft server in a docker container as such you must first install docker.
 
-Run `make install` as root and the files will be copied to the appropriate locations.
+Run `make install` as root and the systemd units files and `minecraftctl` script will be copied to the appropriate locations.
 
 You should also create a minecraft user to own the server files.
 
@@ -23,7 +23,7 @@ You can find an AUR package [here](https://aur.archlinux.org/packages/minecraft-
 
 # Usage
 
-With this project installed you can run multple different minecraft worlds on the same host.
+With this project installed you can run multiple different minecraft worlds on the same host.
 Each is given a name and can be configured in an `/etc/minecraft/<name>` file.
 
 ## EULA
@@ -69,8 +69,8 @@ EPHEMERAL=true
 WORLD=http://minecraft.example.com/myworld.zip
 ```
 
-Now everytime the server is started is will download a fresh copy of the world and launch it.
-Without the `EPHEMERAL` var the world will only be downloaded to first time.
+Now every time the server is started, it will download a fresh copy of the world and launch it.
+Without the `EPHEMERAL` var the world will only be downloaded the first time.
 
 ## Backups
 
@@ -83,11 +83,12 @@ sudo systemctl enable minecraftd-backup@survival.timer
 sudo systemctl start minecraftd-backup@survival.timer
 ```
 
-this will enable weekly backups of the `survival` server.
-Backups are stored in the default `$DATA_DIR/$BACKUP_DIR` which is `/srv/minecraft/<name>/backups` if you want to copy them offsite you will need to manage that yourself.
+This will enable weekly backups of the `survival` server.
+Backups are stored in `$DATA_DIR/$BACKUP_DIR` which is `/srv/minecraft/<name>/backups` by default.
+If you want to copy them off-site you will need to manage that yourself.
 
 
-## Further custimization
+## Further customization
 
 Not everything that is possible to customize has been mentioned here.
 Take a look at the `minecraftctl.sh` script as it is written to be extensible.
@@ -95,7 +96,7 @@ Take a look at the `minecraftctl.sh` script as it is written to be extensible.
 # Portability
 
 These scripts work on my host ;) (arch linux).
-I have not tested them anywhere else, if you run into a bug please file on issue here on github or better yet submit a PR.
+I have not tested them anywhere else, if you run into a bug please file an issue here on github or better yet submit a PR.
 
 # Thanks
 
