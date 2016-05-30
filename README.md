@@ -19,7 +19,7 @@ NOTE: `grep` and `sed` are also required in order to watch the minecraft logs fo
 
 ## AUR Package
 
-An AUR package is in the works...
+You can find an AUR package [here](https://aur.archlinux.org/packages/minecraft-multi-server/).
 
 # Usage
 
@@ -80,6 +80,7 @@ For example:
 
 ```
 sudo systemctl enable minecraftd-backup@survival.timer
+sudo systemctl start minecraftd-backup@survival.timer
 ```
 
 this will enable weekly backups of the `survival` server.
