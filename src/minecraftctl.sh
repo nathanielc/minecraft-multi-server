@@ -38,7 +38,7 @@ LEVEL=${LEVEL-world}
 TIMEOUT=${TIMEOUT-0}
 
 usage() {
-	echo "Usage: $0 [start|stop|restart|status|backup] <name>"
+	echo "Usage: $0 [start|stop|restart|status|save|backup] <name>"
 	echo ""
 	echo "Name is a name for the container and the data dir"
 	exit 1
@@ -66,7 +66,7 @@ start() {
 		exit 0
 	fi
 	stop_container
-	
+
 	vol_mount="--volume=$DATA_DIR/$name:/data"
 	if $EPHEMERAL
 	then
@@ -109,9 +109,9 @@ start() {
 	 	-e "UID=$MINECRAFT_UID" \
 	 	-e "GID=$MINECRAFT_GID" \
 	 	itzg/minecraft-server
-	
+
 	echo "Started minecraft container $name"
-	
+
 }
 
 # Send a command to the game server
@@ -128,11 +128,18 @@ game_command() {
 	wait
 }
 
+# Do a world save
+save() {
+	game_command "save-all flush" "Saved the world"
+	game_command "say Saved the world"
+}
+
+
 # Do a world backup
 backup() {
 	filename="$name-$(date +%Y_%m_%d_%H.%M.%S).tar.gz"
 
-	game_command "say Starting backup..." 
+	game_command "say Starting backup..."
 	# Make sure we always turn saves back on
 	set +e
 	ret=0
@@ -162,7 +169,7 @@ stop() {
 			game_command "save-all"
 			for i in {10..1}
 			do
-				game_command "say Server shutting down in ${i}s..." 
+				game_command "say Server shutting down in ${i}s..."
 				sleep 1
 			done
 			game_command "say Shutting down..."
@@ -216,6 +223,9 @@ restart)
 	;;
 backup)
 	backup
+	;;
+save)
+	save
 	;;
 *)
 	usage

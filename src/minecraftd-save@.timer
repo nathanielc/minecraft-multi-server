@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily save of Minecraft server %i
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+
+
+[Install]
+WantedBy=multi-user.target
+

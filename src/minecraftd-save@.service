@@ -1,0 +1,6 @@
+[Unit]
+Description=Save %I Minceraft server
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/minecraftctl save %i
