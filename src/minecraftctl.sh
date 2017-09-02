@@ -151,7 +151,7 @@ backup() {
 	ret=$(($ret + $?))
 	$DOCKER exec -u minecraft "$name" mkdir -p "/data/$BACKUP_DIR"
 	ret=$(($ret + $?))
-	$DOCKER exec -u minecraft "$name" tar -C /data -czf "$BACKUP_DIR/$filename" --totals "$LEVEL" server.properties
+	$DOCKER exec -u minecraft "$name" tar -C /data -czf "$BACKUP_DIR/$filename" "$LEVEL" server.properties
 	ret=$(($ret + $?))
 	game_command "save-on"
 	ret=$(($ret + $?))
