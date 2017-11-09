@@ -78,7 +78,7 @@ start() {
 		--name "$name" \
 	 	$vol_mount \
 	 	-p $PORT:25565 \
-	 	-e "JVM_OPTS=-Xmx${MAXHEAP}M -Xms${MINHEAP}M" \
+	 	-e "JVM_OPTS=-Xmx${MAXHEAP}M -Xms${MINHEAP}M -D${name}" \
 	 	-e "EULA=$EULA" \
 	 	-e "VERSION=$VERSION" \
 	 	-e "DIFFICULTY=$DIFFICULTY" \
