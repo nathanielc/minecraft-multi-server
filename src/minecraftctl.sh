@@ -138,7 +138,7 @@ game_command() {
 
 # Do a world save
 save() {
-    game_command "save-all flush" "Saved the world"
+    game_command "save-all flush" "Saved the"
     game_command "say Saved the world"
 }
 
@@ -153,7 +153,7 @@ backup() {
     ret=0
     game_command "save-off"
     ret=$(($ret + $?))
-    game_command "save-all flush" "Saved the world"
+    game_command "save-all flush" "Saved the"
     ret=$(($ret + $?))
     sync
     ret=$(($ret + $?))
