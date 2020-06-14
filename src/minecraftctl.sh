@@ -9,11 +9,15 @@ set -e
 # internally the container always listens on 25565
 PORT=${PORT-25565}
 
-RCON_PORT_ARG=''
-if [ -n "$RCON_PORT" ]; then
-    RCON_PORT_ARG="-p $RCON_PORT:25575"
+# Default listen port for rcon
+# This is the published host port,
+# internally the container always listens on 25575
+RCON_PORT=${RCON_PORT-25575}
+RCON_CMD="mcrcon -P ${RCON_PORT}"
+if [ -n "$RCON_PASSWORD" ]
+then
+    RCON_CMD="${RCON_CMD} -p ${RCON_PASSWORD}"
 fi
-echo $RCON_PORT_ARG
 
 # Default max java heap size in MB
 MAXHEAP=${MAXHEAP-2048}
@@ -59,7 +63,7 @@ running() {
 
 # Check if anyone is online
 is_anyone_online() {
-    player_count=$(game_command list "players online:" | sed -r 's/.*([[:digit:]]+)\/[[:digit:]]+ players online:.*/\1/')
+    player_count=$(game_command list | sed -r 's/.*([[:digit:]]+)\/[[:digit:]]+ players online:.*/\1/')
     test $player_count -ne 0
     return $?
 }
@@ -84,7 +88,7 @@ start() {
         --name "$name" \
         $vol_mount \
         -p $PORT:25565 \
-        $RCON_PORT_ARG \
+        -p $RCON_PORT:25575 \
         -e "JVM_OPTS=-Xmx${MAXHEAP}M -Xms${MINHEAP}M -D${name}" \
         -e "JVM_XX_OPTS=${EXTRA_JVM_OPTS}" \
         -e "EULA=$EULA" \
@@ -124,21 +128,13 @@ start() {
 
 # Send a command to the game server
 game_command() {
-    expected=$2
-    if [ -n "$expected" ]
-    then
-        # Start tailing log from end before we issue the command
-        timeout "$TIMEOUT" grep -m 1 "$expected" <($DOCKER logs -f --tail=0 $name) &
-    fi
     # Issue command
-    echo "$1" | $DOCKER attach "$name"
-    # Wait for grep if any
-    wait
+    $RCON_CMD "$1"
 }
 
 # Do a world save
 save() {
-    game_command "save-all flush" "Saved the"
+    game_command "save-all flush"
     game_command "say Saved the world"
 }
 
@@ -153,7 +149,7 @@ backup() {
     ret=0
     game_command "save-off"
     ret=$(($ret + $?))
-    game_command "save-all flush" "Saved the"
+    game_command "save-all flush"
     ret=$(($ret + $?))
     sync
     ret=$(($ret + $?))

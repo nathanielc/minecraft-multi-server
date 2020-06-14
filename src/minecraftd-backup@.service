@@ -3,4 +3,5 @@ Description=Backup %I Minceraft server
 
 [Service]
 Type=oneshot
+EnvironmentFile=-/etc/minecraft/%i
 ExecStart=/usr/bin/minecraftctl backup %i
