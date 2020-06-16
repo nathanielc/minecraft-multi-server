@@ -61,13 +61,6 @@ running() {
     return $?
 }
 
-# Check if anyone is online
-is_anyone_online() {
-    player_count=$(game_command list | sed -r 's/.*([[:digit:]]+)\/[[:digit:]]+ players online:.*/\1/')
-    test $player_count -ne 0
-    return $?
-}
-
 # Start the minecraft docker container
 start() {
     if running
@@ -168,16 +161,13 @@ backup() {
 stop() {
     if running
     then
-        if is_anyone_online
-        then
-            game_command "save-all"
-            for i in {10..1}
-            do
-                game_command "say Server shutting down in ${i}s..."
-                sleep 1
-            done
-            game_command "say Shutting down..."
-        fi
+        game_command "save-all"
+        for i in {3..1}
+        do
+            game_command "say Server shutting down in ${i}s..."
+            sleep 1
+        done
+        game_command "say Shutting down..."
         game_command "stop"
         # Wait for container to stop on its own now
         $DOCKER wait "$name"
