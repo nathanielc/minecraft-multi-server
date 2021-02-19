@@ -17,6 +17,8 @@ RCON_CMD="mcrcon -P ${RCON_PORT}"
 if [ -n "$RCON_PASSWORD" ]
 then
     RCON_CMD="${RCON_CMD} -p ${RCON_PASSWORD}"
+else
+    RCON_CMD="${RCON_CMD} -p minecraft"
 fi
 
 # Default max java heap size in MB
@@ -82,6 +84,7 @@ start() {
         $vol_mount \
         -p $PORT:25565 \
         -p $RCON_PORT:25575 \
+        -e "RCON_PASSWORD=${RCON_PASSWORD}" \
         -e "JVM_OPTS=-Xmx${MAXHEAP}M -Xms${MINHEAP}M -D${name}" \
         -e "JVM_XX_OPTS=${EXTRA_JVM_OPTS}" \
         -e "EULA=$EULA" \
