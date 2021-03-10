@@ -85,7 +85,9 @@ start() {
         -p $PORT:25565 \
         -p $RCON_PORT:25575 \
         -e "RCON_PASSWORD=${RCON_PASSWORD}" \
-        -e "JVM_OPTS=-Xmx${MAXHEAP}M -Xms${MINHEAP}M -D${name}" \
+        -e "JVM_OPTS=-D${name}" \
+        -e "INIT_MEMORY=${MINHEAP}M" \
+        -e "MAX_MEMORY=${MAXHEAP}M" \
         -e "JVM_XX_OPTS=${EXTRA_JVM_OPTS}" \
         -e "EULA=$EULA" \
         -e "VERSION=$VERSION" \
